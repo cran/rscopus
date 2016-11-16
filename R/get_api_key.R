@@ -30,7 +30,7 @@ get_api_key = function(api_key = NULL, error = TRUE) {
     }
     if (length(api_key) > 1){
       warning(paste0("API key from ", getOption("elsevier_api_key_filename"),
-                  "had too many lines! Taking first \n"))
+                  " had too many lines! Taking first \n"))
       api_key = api_key[1]
     }
   }
@@ -42,10 +42,22 @@ get_api_key = function(api_key = NULL, error = TRUE) {
 
   if (is.null(api_key) & error) {
     stop(paste0("API key not found, please set ",
-                "option('elsevier_api_key_filename') or",
-                "option('elsevier_api_key') for general use or",
-                "set environment variable Elsevier_API, to be",
+                "option('elsevier_api_key_filename') or ",
+                "option('elsevier_api_key') for general use or ",
+                "set environment variable Elsevier_API, to be ",
                 "accessed by Sys.getenv('Elsevier_API')"))
   }
   return(api_key)
+}
+
+#' @title Set API Key for Elsevier
+#'
+#' @description Sets Elsevier API key using
+#' if \code{option(elsevier_api_key)}
+#' @param api_key Elsvier API key
+#' @return NULL
+#' @export
+set_api_key = function(api_key) {
+  options("elsevier_api_key" = api_key)
+  invisible(NULL)
 }

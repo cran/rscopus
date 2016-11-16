@@ -81,15 +81,15 @@ get_author_info <- function(...){
                    auth_id, fixed = TRUE)
     affil = cr$`affiliation-current`
     affil_name = affil$`affiliation-name`
-    affil_id = affil$`affiliation-id`
+    affid = affil$`affiliation-id`
 
-    nonull = function(x){
+    nonull2 = function(x){
       ifelse(is.null(x), "", x)
     }
-    c(auth_name = nonull(auth_names),
-      auth_id = nonull(auth_id),
-      affil_id = nonull(affil_id),
-      affil_name = nonull(affil_name))
+    c(auth_name = nonull2(auth_names),
+      au_id = nonull2(auth_id),
+      affid = nonull2(affid),
+      affil_name = nonull2(affil_name))
   }
 
   info = t(sapply(cr, auth_get_info))
