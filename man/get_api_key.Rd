@@ -10,7 +10,7 @@ get_api_key(api_key = NULL, error = TRUE)
 have_api_key(api_key = NULL)
 }
 \arguments{
-\item{api_key}{Elsvier API key}
+\item{api_key}{Elsevier API key}
 
 \item{error}{Should the function error if \code{api_key = NULL}?}
 }
@@ -28,5 +28,5 @@ You can either set the API key using
 \code{api_key = Sys.getenv('Elsevier_API')}.
 }
 \examples{
-get_api_key(error = FALSE)
+res = get_api_key(error = FALSE)
 }

@@ -2,7 +2,7 @@
 #'
 #' @description This function wraps \code{\link{generic_elsevier_api}} to give a
 #' retrieval of an entitlement from the Elsevier Text Entitlement API
-#' @param id Identifier for entitllement
+#' @param id Identifier for entitlement
 #' @param identifier Type of identifier to use
 #' @param http_end any additional end to http statement.
 #' See \code{\link{generic_elsevier_api}}
@@ -13,7 +13,8 @@
 #' @examples
 #' api_key = get_api_key(NULL, error = FALSE)
 #' if (!is.null(api_key)){
-#'    x = entitlement_retrieval("S1053811915002700", identifier = "pii")
+#'    x = entitlement_retrieval("S1053811915002700", identifier = "pii",
+#'    verbose = FALSE)
 #' }
 entitlement_retrieval <- function(
   id, # Identifier for article

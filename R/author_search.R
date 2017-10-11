@@ -8,10 +8,11 @@
 #' \url{http://dev.elsevier.com/api_key_settings.html})
 #' @param verbose Print diagnostic messages
 #' @param facets Facets sent in query.  See \url{http://dev.elsevier.com/api_docs.html}
-#' @param searcher Identifer for author ID.  Do not change unless you
+#' @param searcher Identifier for author ID.  Do not change unless you
 #' know exactly what the API calls for.
 #' @param max_count Maximum count of records to be returned.
-#' @param ... Arguments to be passed to \code{\link{GET}}
+#' @param ... Arguments to be passed to the query list for
+#' \code{\link{GET}}
 #' @export
 #' @seealso \code{\link{get_author_info}}
 #' @importFrom httr stop_for_status
@@ -31,15 +32,24 @@ author_search <- function(
   api_key = get_api_key(api_key)
 
   # Wrapper to go through all the pages
-  get_results = function(au_id, start = 0, count = count, ...){
+  get_results = function(au_id, start = 0,
+                         count = count,
+                         verbose = TRUE, ...){
+    q = list(
+      query = paste0(searcher, "(", au_id, ")"),
+      "APIKey" = api_key,
+      count = count,
+      start = start,
+      view = "COMPLETE",
+      ...)
+    print_q = q
+    print_q$APIKey = NULL
+    if (verbose) {
+      message("The query list is: ")
+      print(dput(print_q))
+    }
     r = GET(http,
-            query = list(
-              query = paste0(searcher, "(", au_id, ")"),
-              "APIKey" = api_key,
-              count = count,
-              start = start,
-              view = "COMPLETE",
-              ...),
+            query = q,
             add_headers(
               "X-ELS-ResourceVersion" = "allexpand")
     )
@@ -47,9 +57,12 @@ author_search <- function(
     cr = content(r)$`search-results`
     return(cr)
   }
+  au_id = as.character(au_id)
 
   cr = get_results(au_id, start = 0, count = count,
-                   facets = facets)
+                   facets = facets,
+                   verbose = verbose,
+                   ...)
   all_facets = cr$facet
   # Find total counts
   total_results = as.numeric(cr$`opensearch:totalResults`)
@@ -83,7 +96,9 @@ author_search <- function(
     for (irun in seq(n_runs - 1)) {
       start = irun * count
       cr = get_results(au_id, start = start, count = count,
-                       facets = facets)
+                       facets = facets,
+                       verbose = FALSE,
+                       ...)
       all_entries = c(all_entries, cr$entry)
       all_facets = c(all_facets, cr$facet)
       if (verbose) {

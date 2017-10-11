@@ -4,7 +4,7 @@
 #' @description Searches SCOPUS to get information about documents on an author.
 #' @param au_id Author ID number. Overrides any first/last name argument
 #' @param last_name last name of author
-#' @param api_key Elsvier API key
+#' @param api_key Elsevier API key
 #' @param first_name first name of author
 #' @param verbose Print diagnostic messages
 #' @param all_author_info Should all author info be recorded instead of that just to the
@@ -14,7 +14,7 @@
 #' @seealso \code{\link{get_author_info}}
 #' @return List of entries from SCOPUS
 #' @examples \dontrun{
-#' author_df(last_name = "Muschelli", first_name = "John")
+#' author_df(last_name = "Muschelli", first_name = "John", verbose = FALSE)
 #' }
 #' @note The \code{author_data} command will return the list of all entries as well as
 #' the \code{data.frame}.
@@ -43,11 +43,11 @@ author_df = function(au_id, last_name,
 #' @rdname author_df
 #' @export
 author_data = function(au_id, last_name,
-                     first_name,
-                     api_key = NULL,
-                     verbose = TRUE,
-                     all_author_info = FALSE,
-                     ...){
+                       first_name,
+                       api_key = NULL,
+                       verbose = TRUE,
+                       all_author_info = FALSE,
+                       ...){
 
   api_key = get_api_key(api_key)
 
@@ -72,8 +72,8 @@ author_data = function(au_id, last_name,
   if ( all_author_info ) {
     # df$indexer = seq(nrow(df))
     df = entries_to_df(entries = entries,
-                        au_id = NULL,
-                        verbose = verbose)
+                       au_id = NULL,
+                       verbose = verbose)
     # df = merge(df, df2, sort = FALSE, all.x = TRUE)
     # df = df[ order(df$indexer), ]
     # df$indexer = NULL
@@ -103,7 +103,7 @@ author_data = function(au_id, last_name,
 #' @param au_id Author ID number. Overrides any first/last name argument
 #' @param last_name last name of author
 #' @param first_name first name of author
-#' @param api_key Elsvier API key
+  #' @param api_key Elsevier API key
 #' @param verbose Print diagnostic messages
 #' @return List of first/last name and author ID
 #' @note This function is really to avoid duplication
@@ -119,20 +119,21 @@ process_author_name = function(au_id, last_name,
   if (missing(au_id)) {
     last_name = replace_non_ascii(last_name)
     first_name = replace_non_ascii(first_name)
-    auth_name = get_author_info(last_name = last_name,
-                                first_name = first_name,
-                                api_key = api_key)
-    if (NROW(auth_name) == 0) {
-      stop("No author name found")
-    }
-    if (all(is.na(auth_name$au_id))) {
-      stop("No author name found")
-    }
-    if (verbose) {
-      message("Authors found:")
-      print(auth_name[1,])
-    }
-    au_id = auth_name$au_id[1]
+    auth_name = get_author_info(
+      last_name = last_name,
+      first_name = first_name,
+      api_key = api_key, verbose = verbose)
+if (NROW(auth_name) == 0) {
+  stop("No author name found")
+}
+if (all(is.na(auth_name$au_id))) {
+  stop("No author name found")
+}
+if (verbose) {
+  message("Authors found:")
+  print(auth_name[1,])
+}
+au_id = auth_name$au_id[1]
   }
   if (missing(last_name)) {
     last_name = NULL
@@ -140,6 +141,7 @@ process_author_name = function(au_id, last_name,
   if (missing(first_name)) {
     first_name = NULL
   }
+  au_id = as.character(au_id)
   L = list(first_name = first_name,
            last_name = last_name,
            au_id = au_id)

@@ -21,7 +21,7 @@ generic_elsevier_api(query = NULL, type = c("search", "article",
 \item{search_type}{Type of search if \code{type = "search"}.
 See \url{http://dev.elsevier.com/api_docs.html}}
 
-\item{api_key}{Elsvier API key}
+\item{api_key}{Elsevier API key}
 
 \item{headers}{Headers passed to \code{\link{add_headers}},
 passed to \code{\link{GET}}}
@@ -51,16 +51,19 @@ query_string = "affil(hopkins)"
 # Use affiliation query
 s = generic_elsevier_api(query = query_string,
                          type = "search", search_type = "affiliation",
-                         api_key = api_key)
+                         api_key = api_key,
+                      verbose = FALSE)
 
 # Use author query
 s = generic_elsevier_api(query = query_string,
 type = "search", search_type = "author",
-api_key = api_key)
+api_key = api_key,
+                      verbose = FALSE)
 
 # Query abstract by pii
 s = generic_elsevier_api(query = "",
                       type = "abstract", http_end = "pii/S1053811915002700",
-                      api_key = api_key)
+                      api_key = api_key,
+                      verbose = FALSE)
 }
 }

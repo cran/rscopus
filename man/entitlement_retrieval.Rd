@@ -8,7 +8,7 @@ entitlement_retrieval(id, identifier = c("scopus_id", "eid", "doi", "pii",
   "pubmed_id"), http_end = NULL, ...)
 }
 \arguments{
-\item{id}{Identifier for entitllement}
+\item{id}{Identifier for entitlement}
 
 \item{identifier}{Type of identifier to use}
 
@@ -27,7 +27,8 @@ retrieval of an entitlement from the Elsevier Text Entitlement API
 \examples{
 api_key = get_api_key(NULL, error = FALSE)
 if (!is.null(api_key)){
-   x = entitlement_retrieval("S1053811915002700", identifier = "pii")
+   x = entitlement_retrieval("S1053811915002700", identifier = "pii",
+   verbose = FALSE)
 }
 }
 \seealso{

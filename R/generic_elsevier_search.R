@@ -5,7 +5,7 @@
 #' @param type Type of search.  See \url{http://dev.elsevier.com/api_docs.html}
 #' @param search_type Type of search if \code{type = "search"}.
 #' See \url{http://dev.elsevier.com/api_docs.html}
-#' @param api_key Elsvier API key
+#' @param api_key Elsevier API key
 #' @param headers Headers passed to \code{\link{add_headers}},
 #' passed to \code{\link{GET}}
 #' @param content_type Is the data content or feedback?
@@ -22,17 +22,20 @@
 #' # Use affiliation query
 #' s = generic_elsevier_api(query = query_string,
 #'                          type = "search", search_type = "affiliation",
-#'                          api_key = api_key)
+#'                          api_key = api_key,
+#'                       verbose = FALSE)
 #'
 #' # Use author query
 #' s = generic_elsevier_api(query = query_string,
 #' type = "search", search_type = "author",
-#' api_key = api_key)
+#' api_key = api_key,
+#'                       verbose = FALSE)
 #'
 #' # Query abstract by pii
 #' s = generic_elsevier_api(query = "",
 #'                       type = "abstract", http_end = "pii/S1053811915002700",
-#'                       api_key = api_key)
+#'                       api_key = api_key,
+#'                       verbose = FALSE)
 #' }
 #' @importFrom httr GET add_headers
 generic_elsevier_api <- function(
