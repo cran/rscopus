@@ -2,14 +2,23 @@
 % Please edit documentation in R/author_df.R
 \name{author_df}
 \alias{author_df}
+\alias{author_df_orig}
+\alias{author_list}
 \alias{author_data}
 \title{Search Author Content on SCOPUS}
 \usage{
 author_df(au_id, last_name, first_name, api_key = NULL, verbose = TRUE,
-  all_author_info = FALSE, ...)
+  all_author_info = FALSE,
+  http = "https://api.elsevier.com/content/search/scopus",
+  view = "COMPLETE", count = 25, general = TRUE, ...)
 
-author_data(au_id, last_name, first_name, api_key = NULL, verbose = TRUE,
-  all_author_info = FALSE, ...)
+author_df_orig(..., general = FALSE)
+
+author_list(au_id, last_name, first_name, api_key = NULL, verbose = TRUE,
+  http = "https://api.elsevier.com/content/search/scopus",
+  view = "COMPLETE", count = 25, ...)
+
+author_data(..., verbose = TRUE, all_author_info = FALSE, general = TRUE)
 }
 \arguments{
 \item{au_id}{Author ID number. Overrides any first/last name argument}
@@ -22,8 +31,20 @@ author_data(au_id, last_name, first_name, api_key = NULL, verbose = TRUE,
 
 \item{verbose}{Print diagnostic messages}
 
-\item{all_author_info}{Should all author info be recorded instead of that just to the
+\item{all_author_info}{Should all author info be recorded instead of
+that just to the
 author given}
+
+\item{http}{Address for scopus api}
+
+\item{view}{type of view to give, see
+\url{https://api.elsevier.com/documentation/ScopusSearchAPI.wadl}}
+
+\item{count}{number of records to retrieve (below 25, see
+\url{https://dev.elsevier.com/api_key_settings.html})}
+
+\item{general}{Should \code{\link{gen_entries_to_df}} instead of the
+way before version 0.5.10.9001}
 
 \item{...}{Arguments to be passed to \code{\link{author_search}}}
 }
@@ -31,10 +52,15 @@ author given}
 List of entries from SCOPUS
 }
 \description{
-Searches SCOPUS to get information about documents on an author.
+Searches SCOPUS to get information about documents
+on an author.
+Note, \code{author_list} returns a list of the entries from
+\code{author_search},
+but allows you to put in a name.
 }
 \note{
-The \code{author_data} command will return the list of all entries as well as
+The \code{author_data} command will return the list of all
+entries as well as
 the \code{data.frame}.
 }
 \examples{

@@ -5,14 +5,25 @@
 \alias{affil_data}
 \title{Search Affiliation Content on SCOPUS}
 \usage{
-affil_df(affil_id, verbose = TRUE, ...)
+affil_df(affil_id = NULL, affil_name = NULL, api_key = NULL,
+  verbose = TRUE, facets = NULL, sort = "document-count", ...)
 
-affil_data(affil_id, verbose = TRUE, ...)
+affil_data(affil_id = NULL, affil_name = NULL, api_key = NULL,
+  verbose = TRUE, facets = NULL, sort = "document-count", ...)
 }
 \arguments{
 \item{affil_id}{Affiliation ID number.}
 
+\item{affil_name}{affiliation name.  Disregarded if \code{affil_id} is
+specified}
+
+\item{api_key}{Elsevier API key}
+
 \item{verbose}{Print diagnostic messages}
+
+\item{facets}{Facets sent in query.  See \url{https://dev.elsevier.com/api_docs.html}}
+
+\item{sort}{sorting sent to query}
 
 \item{...}{Arguments to be passed to \code{\link{author_search}}}
 }

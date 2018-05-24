@@ -4,14 +4,16 @@
 \alias{get_complete_author_info}
 \title{Get Complete Author Information and ID from Scopus}
 \usage{
-get_complete_author_info(last_name, first_name = NULL, api_key = NULL,
-  http = "http://api.elsevier.com/content/search/author", query = NULL,
-  verbose = TRUE, ...)
+get_complete_author_info(last_name, first_name = NULL, affil_id = NULL,
+  api_key = NULL, http = "https://api.elsevier.com/content/search/author",
+  query = NULL, verbose = TRUE, au_id = NULL, ...)
 }
 \arguments{
 \item{last_name}{last name of author}
 
 \item{first_name}{first name of author}
+
+\item{affil_id}{ID of affiliation (optional)}
 
 \item{api_key}{Elsevier API key}
 
@@ -20,6 +22,9 @@ get_complete_author_info(last_name, first_name = NULL, api_key = NULL,
 \item{query}{Additional query info, added using \code{+AND+} to original query}
 
 \item{verbose}{Print messages from specification}
+
+\item{au_id}{Author ID number, will override first/last combination if
+specified}
 
 \item{...}{options to pass to \code{\link{GET}}}
 }

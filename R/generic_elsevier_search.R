@@ -1,10 +1,10 @@
 #' @title Generic Elsevier Search
 #'
 #' @description Runs GET on generic Elsevier Search
-#' @param query Query to run
-#' @param type Type of search.  See \url{http://dev.elsevier.com/api_docs.html}
+#' @param query Query to run, not overall query, but `queryParam` query
+#' @param type Type of search.  See \url{https://dev.elsevier.com/api_docs.html}
 #' @param search_type Type of search if \code{type = "search"}.
-#' See \url{http://dev.elsevier.com/api_docs.html}
+#' See \url{https://dev.elsevier.com/api_docs.html}
 #' @param api_key Elsevier API key
 #' @param headers Headers passed to \code{\link{add_headers}},
 #' passed to \code{\link{GET}}
@@ -14,7 +14,7 @@
 #' (done using \code{paste0})
 #' @param verbose Print messages from specification
 #' @param api_key_error Should there be an error if no API key?
-#' @param ... Options passed to query for \code{\link{GET}}
+#' @param ... Options passed to queryParam for \code{\link{GET}}
 #' @return List of elements, content and the \code{GET} request
 #' @export
 #' @examples \dontrun{
@@ -53,7 +53,7 @@ generic_elsevier_api <- function(
   api_key = NULL,
   headers = NULL,
   content_type = c("content", "feedback"),
-  root_http = "http://api.elsevier.com",
+  root_http = "https://api.elsevier.com",
   http_end = NULL,
   verbose = TRUE,
   api_key_error = TRUE,
@@ -92,22 +92,16 @@ generic_elsevier_api <- function(
   http = gsub("//", "/", http)
   http = paste(root_http, http, sep = "/")
 
-  if (verbose){
-    message(paste0("HTTP specified is:", http, "\n"))
+  if (verbose) {
+    parsed_url = httr::parse_url(http)
+    parsed_url$query$APIKey = NULL
+    parsed_url = httr::build_url(parsed_url)
+    message(paste0("HTTP specified is:", parsed_url, "\n"))
   }
-  if (!is.null(api_key)){
-    qlist = list(
-      "apiKey" = api_key,
-      query = query,
-      ...)
-  } else {
-    qlist =  list(
-      query = query, ...)
-  }
-  if (is.null(query)){
-    qlist$query = NULL
-  }
-  if (length(qlist) > 0){
+  qlist = list(...)
+  qlist$query = query
+  qlist$apiKey = api_key
+  if (length(qlist) > 0) {
     r = GET(http,
             query = qlist,
             add_headers(headers)

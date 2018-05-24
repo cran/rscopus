@@ -4,7 +4,9 @@
 \alias{affil_search}
 \title{Search Author Content on SCOPUS}
 \usage{
-affil_search(affil_id, searcher = "AF-ID", ...)
+affil_search(affil_id, searcher = "AF-ID",
+  http = "https://api.elsevier.com/content/search/affiliation",
+  facets = "affilcountry(sort=document-count)", count = 200, ...)
 }
 \arguments{
 \item{affil_id}{Affiliation ID number}
@@ -12,7 +14,14 @@ affil_search(affil_id, searcher = "AF-ID", ...)
 \item{searcher}{Identifier for Affiliation ID.  Do not change unless you
 know exactly what the API calls for.}
 
-\item{...}{Arguments to be passed to \code{\link{GET}}}
+\item{http}{Address for scopus api}
+
+\item{facets}{Facets sent in query.  See \url{https://dev.elsevier.com/api_docs.html}}
+
+\item{count}{number of records to retrieve (below 200, see
+\url{https://dev.elsevier.com/api_key_settings.html})}
+
+\item{...}{Arguments to be passed to \code{\link{author_search}}}
 }
 \value{
 List of entries from SCOPUS

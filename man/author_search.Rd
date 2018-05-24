@@ -5,9 +5,10 @@
 \title{Search Author Content on SCOPUS}
 \usage{
 author_search(au_id, api_key = NULL,
-  http = "http://api.elsevier.com/content/search/scopus", count = 25,
-  verbose = TRUE, facets = "subjarea(sort=fd)", searcher = "AU-ID",
-  max_count = Inf, ...)
+  http = "https://api.elsevier.com/content/search/author", count = 200,
+  start = 0, verbose = TRUE, facets = "subjarea(sort=fd)",
+  searcher = "AU-ID", max_count = Inf, view = c("STANDARD", "COMPLETE"),
+  add_query = NULL, ...)
 }
 \arguments{
 \item{au_id}{Author ID number}
@@ -16,17 +17,25 @@ author_search(au_id, api_key = NULL,
 
 \item{http}{Address for scopus api}
 
-\item{count}{number of records to retrieve (below 25, see
-\url{http://dev.elsevier.com/api_key_settings.html})}
+\item{count}{number of records to retrieve (below 200, see
+\url{https://dev.elsevier.com/api_key_settings.html})}
+
+\item{start}{where should the records start gathering}
 
 \item{verbose}{Print diagnostic messages}
 
-\item{facets}{Facets sent in query.  See \url{http://dev.elsevier.com/api_docs.html}}
+\item{facets}{Facets sent in query.  See
+\url{https://dev.elsevier.com/api_docs.html}}
 
 \item{searcher}{Identifier for author ID.  Do not change unless you
 know exactly what the API calls for.}
 
 \item{max_count}{Maximum count of records to be returned.}
+
+\item{view}{type of view to give, see
+\url{https://api.elsevier.com/documentation/AuthorSearchAPI.wadl}}
+
+\item{add_query}{Things to add to the query parameter for the request}
 
 \item{...}{Arguments to be passed to the query list for
 \code{\link{GET}}}
@@ -36,6 +45,12 @@ List of entries from SCOPUS
 }
 \description{
 Searches SCOPUS to get information about documents on an author.
+}
+\examples{
+\dontrun{
+author_search(au_id = "Smith", searcher = "affil(princeton) and authlast")
+berk = author_search(au_id = "berkeley", searcher = "affil", count =100)
+}
 }
 \seealso{
 \code{\link{get_author_info}}
