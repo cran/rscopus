@@ -34,7 +34,7 @@ author_search <- function(
   count = 200, # number of records to retrieve (below 25)
   start = 0,
   verbose = TRUE,
-  facets =  "subjarea(sort=fd)",
+  facets =  "subjarea(sort=fd,count=350)",
   searcher = "AU-ID",
   max_count = Inf,
   view = c("STANDARD", "COMPLETE"),
@@ -86,7 +86,11 @@ author_search <- function(
     cr = content(r)$`search-results`
     return(cr)
   }
+
+
   au_id = as.character(au_id)
+  au_id = gsub("AUTHOR_ID:", "", au_id, fixed = TRUE)
+  au_id = gsub("AFFILIATION_ID:", "", au_id, fixed = TRUE)
 
   cr = get_results(au_id, start = init_start, count = count,
                    facets = facets,

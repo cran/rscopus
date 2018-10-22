@@ -4,7 +4,8 @@
 \alias{process_author_name}
 \title{Process Author Name}
 \usage{
-process_author_name(au_id, last_name, first_name, api_key = NULL,
+process_author_name(au_id = NULL, last_name = NULL,
+  first_name = NULL, affil_id = NULL, api_key = NULL,
   verbose = TRUE)
 }
 \arguments{
@@ -13,6 +14,8 @@ process_author_name(au_id, last_name, first_name, api_key = NULL,
 \item{last_name}{last name of author}
 
 \item{first_name}{first name of author}
+
+\item{affil_id}{ID of affiliation (optional)}
 
 \item{api_key}{Elsevier API key}
 

@@ -7,18 +7,21 @@
 \alias{author_data}
 \title{Search Author Content on SCOPUS}
 \usage{
-author_df(au_id, last_name, first_name, api_key = NULL, verbose = TRUE,
-  all_author_info = FALSE,
+author_df(au_id = NULL, last_name = NULL, first_name = NULL,
+  api_key = NULL, verbose = TRUE, all_author_info = FALSE,
   http = "https://api.elsevier.com/content/search/scopus",
-  view = "COMPLETE", count = 25, general = TRUE, ...)
+  view = "COMPLETE", count = 25, general = TRUE, scrub = FALSE,
+  ...)
 
 author_df_orig(..., general = FALSE)
 
-author_list(au_id, last_name, first_name, api_key = NULL, verbose = TRUE,
+author_list(au_id = NULL, last_name = NULL, first_name = NULL,
+  api_key = NULL, verbose = TRUE,
   http = "https://api.elsevier.com/content/search/scopus",
   view = "COMPLETE", count = 25, ...)
 
-author_data(..., verbose = TRUE, all_author_info = FALSE, general = TRUE)
+author_data(..., verbose = TRUE, all_author_info = FALSE,
+  general = TRUE, scrub = FALSE)
 }
 \arguments{
 \item{au_id}{Author ID number. Overrides any first/last name argument}
@@ -46,6 +49,8 @@ author given}
 \item{general}{Should \code{\link{gen_entries_to_df}} instead of the
 way before version 0.5.10.9001}
 
+\item{scrub}{Should `scrub_identifier` be run on the identifier?}
+
 \item{...}{Arguments to be passed to \code{\link{author_search}}}
 }
 \value{
@@ -64,8 +69,9 @@ entries as well as
 the \code{data.frame}.
 }
 \examples{
-\dontrun{
-author_df(last_name = "Muschelli", first_name = "John", verbose = FALSE)
+if (have_api_key()) {
+res = author_df(last_name = "Muschelli", first_name = "John",
+verbose = FALSE)
 }
 }
 \seealso{

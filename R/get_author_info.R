@@ -11,15 +11,24 @@
 #' @param verbose Print messages from specification
 #' @param au_id Author ID number, will override first/last combination if
 #' specified
+#' @param affil_name name of affiliation
 #' @param ... options to pass to \code{\link{GET}}
 #' @importFrom httr GET content
 #' @importFrom utils URLencode
 #' @export
 #' @return List of information
+#' @examples
+#' if (have_api_key()) {
+#' res = get_complete_author_info(
+#' last_name = "Muschelli",
+#' first_name = "John",
+#' verbose = FALSE)
+#' }
 get_complete_author_info <- function(
-  last_name, # last name of author
+  last_name= NULL, # last name of author
   first_name = NULL, # first name of author
   affil_id = NULL,
+  affil_name = NULL,
   api_key = NULL, # Elsevier API key
   http = "https://api.elsevier.com/content/search/author", # Author API http
   query = NULL,
@@ -40,13 +49,30 @@ get_complete_author_info <- function(
       reg_query = paste0(paste0(reg_query, collapse = "+AND+"), "+AND+", query)
     }
   } else {
-    if (!missing(last_name) || !is.null(first_name)) {
+    if (!is.null(last_name) || !is.null(first_name)) {
       warning("AU-ID will override this first/last name combo!")
     }
+    au_id = gsub("AUTHOR_ID:", "", au_id, fixed = TRUE)
     reg_query = paste0("AU-ID(", au_id, ")")
   }
 
-  if (!is.null(affil_id)) {
+  if (!is.null(affil_id) | !is.null(affil_name)) {
+    if (is.null(affil_id)) {
+      res = get_affiliation_info(
+        affil_id = affil_id,
+        affil_name = affil_name)
+      if (nrow(res) > 0) {
+        res = res[1,]
+        message(
+          paste0("Using affiliation ID: ",
+                 res$affil_id, " for ",
+                 res$affil_name, ".  If incorrect, please ",
+                 "specify affil_id directly or more specific",
+                 " affiliation name ")
+        )
+      }
+      affil_id = res$affil_id[1]
+    }
     reg_query = paste0(reg_query, "+AND+", "AF-ID(", affil_id, ")")
   }
 

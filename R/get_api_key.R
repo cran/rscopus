@@ -30,7 +30,7 @@ get_api_key = function(api_key = NULL, error = TRUE) {
     }
     if (length(api_key) > 1){
       warning(paste0("API key from ", getOption("elsevier_api_key_filename"),
-                  " had too many lines! Taking first \n"))
+                     " had too many lines! Taking first \n"))
       api_key = api_key[1]
     }
   }
@@ -46,6 +46,9 @@ get_api_key = function(api_key = NULL, error = TRUE) {
                 "option('elsevier_api_key') for general use or ",
                 "set environment variable Elsevier_API, to be ",
                 "accessed by Sys.getenv('Elsevier_API')"))
+  }
+  if (!is.null(api_key)) {
+    class(api_key) = "scopus_api_key"
   }
   return(api_key)
 }
@@ -68,3 +71,22 @@ set_api_key = function(api_key) {
   options("elsevier_api_key" = api_key)
   invisible(NULL)
 }
+
+#' Add Institution or Authorization Token
+#'
+#' @param token Elsevier API token, usually from
+#' \code{\link{elsevier_authenticate}}
+#'
+#' @return An object of class \code{request}
+#' @export
+inst_token_header = function(token) {
+  list("X-ELS-Insttoken" = token)
+}
+
+
+#' @rdname inst_token_header
+#' @export
+auth_token_header = function(token) {
+  list("X-ELS-Authtoken" = token)
+}
+

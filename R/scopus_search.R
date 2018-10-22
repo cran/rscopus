@@ -10,7 +10,7 @@
 #' @param http Address for scopus API
 #' @param count number of records to retrieve (below 200 for STANDARD,
 #' below 25 for COMPLETE views, see
-#' \url{https://dev.elsevier.com/api_key_settings.html})
+#' \url{https://dev.elsevier.com/api_key_settings.html}).
 #' @param start where should the records start gathering
 #' @param verbose Print diagnostic messages
 #' @param max_count Maximum count of records to be returned.
@@ -20,9 +20,20 @@
 #' \code{\link{GET}}
 #' @export
 #' @return List of entries from SCOPUS
-#' @examples \dontrun{
-#' res = scopus_search(query = "all(gene)", max_count = 200)
+#' @examples
+#' if (have_api_key()) {
+#' res = scopus_search(query = "all(gene)", max_count = 20,
+#' count = 10)
 #' df = gen_entries_to_df(res$entries)
+#' head(df$df)
+#' sci_res = sciencedirect_search(query = "heart+attack AND text(liver)",
+#' max_count = 30, count = 25)
+#' sci_df = gen_entries_to_df(sci_res$entries)
+#'
+#' nt = sciencedirect_search(query = "title(neurotoxin)", max_count = 20,
+#' count = 10)
+#' nt_df = gen_entries_to_df(nt$entries)
+#' nt_df = nt_df$df
 #' }
 scopus_search <- function(
   query, # Author ID number
@@ -77,12 +88,15 @@ scopus_search <- function(
     }
     stop_for_status(r)
     cr = content(r)$`search-results`
-    return(cr)
+    L = list(get_statement = r, content = cr)
+    return(L)
   }
 
   cr = get_results(query, start = init_start, count = count,
                    verbose = verbose,
                    ...)
+  all_get = cr$get_statement
+  cr = cr$content
 
   all_facets = cr$facet
   # Find total counts
@@ -115,7 +129,7 @@ scopus_search <- function(
   if (n_runs > 1) {
     if (verbose) {
       message(paste0(n_runs, " runs need to be ",
-                     "sent with curent count"))
+                     "sent with current count"))
       pb = txtProgressBar(min = ifelse(n_runs == 2, 0, 1), max = n_runs - 1,
                           initial = 1, style = 3)
     }
@@ -124,6 +138,8 @@ scopus_search <- function(
       cr = get_results(query, start = start, count = count,
                        verbose = FALSE,
                        ...)
+      all_get = c(all_get, cr$get_statement)
+      cr = cr$content
       all_entries = c(all_entries, cr$entry)
       all_facets = c(all_facets, cr$facet)
       if (verbose) {
@@ -145,8 +161,29 @@ scopus_search <- function(
     warning("May not have received all entries")
   }
   L = list(entries = all_entries, total_results = xtotal_results)
+  L$get_statements = all_get
   L$facets = all_facets
   return(L)
 }
 
 
+
+#' @rdname scopus_search
+#' @export
+sciencedirect_search = function(
+  count = 100,
+  ...){
+  count_choices = as.character(c(10, 25, 50, 100))
+  count = as.character(count)
+  count = match.arg(count, choices = count_choices)
+  count = as.numeric(count)
+  res <- scopus_search(
+    count = count,
+    ...,
+    http = "https://api.elsevier.com/content/search/sciencedirect")
+  return(res)
+}
+
+#' @rdname scopus_search
+#' @export
+scidir_search = sciencedirect_search

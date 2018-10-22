@@ -12,15 +12,29 @@ test_that("author_df_works", {
 
   if (have_api_key()) {
     expect_pass({
-        dd = author_df(au_id = "8858259000", all_author_info = TRUE,
-                       count = 25)
+      dd = author_df(au_id = "40462056100", all_author_info = TRUE,
+                     count = 25)
     })
   }
 
   if (have_api_key()) {
     expect_pass({
-      dd = author_df(au_id = "8858259000", all_author_info = FALSE,
+      dd = author_df(au_id = "40462056100", all_author_info = FALSE,
                      count = 25)
     })
   }
+
+  if (have_api_key()) {
+    testthat::expect_warning({
+      dd = author_df(au_id = "8858259000", count = 25,
+                     all_author_info = FALSE
+      )
+    })
+  }
+  if (have_api_key()) {
+    testthat::expect_warning({
+      dd = author_list(au_id = "8858259000", count = 25)
+    })
+  }
+
 })

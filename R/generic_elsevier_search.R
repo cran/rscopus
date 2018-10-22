@@ -47,9 +47,11 @@ generic_elsevier_api <- function(
            "embase", "author",
            "serial", "nonserial",
            "subject", "holdings",
-           "citation-count", "citations"),
+           "citation-count", "citations",
+           "metadata", "ev",
+           "ev_records"),
   search_type = c("affiliation", "author", "scopus",
-           "scidir", "scidir-object"),
+           "scidir", "scidir-object", "sciencedirect"),
   api_key = NULL,
   headers = NULL,
   content_type = c("content", "feedback"),
@@ -75,7 +77,10 @@ generic_elsevier_api <- function(
     entitlement = "entitlement",
     holdings = "report.url",
     "citation-count" = "citation-count",
-    citations = "citations"
+    citations = "citations",
+    metadata = "article",
+    ev = "results",
+    ev_records = "records"
   )
   if (type %in% c("entitlement","recommendation")) {
     type = "article"
@@ -83,6 +88,10 @@ generic_elsevier_api <- function(
   if (type %in% c("citation-count", "citations")) {
     type = "abstract"
   }
+  if (type %in% c("ev_records")) {
+    type = "ev"
+  }
+
 
   http = paste(type, search_type, sep = "/")
   if (!is.null(http_end)) {
@@ -101,15 +110,16 @@ generic_elsevier_api <- function(
   qlist = list(...)
   qlist$query = query
   qlist$apiKey = api_key
+  hdrs = do.call(httr::add_headers, args = as.list(headers))
   if (length(qlist) > 0) {
     r = GET(http,
             query = qlist,
-            add_headers(headers)
+            hdrs
     )
   } else {
     r = GET(http,
             add_headers(headers)
-            )
+    )
   }
   cr = content(r)
   return(list(get_statement = r, content = cr))

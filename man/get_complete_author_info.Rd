@@ -4,8 +4,9 @@
 \alias{get_complete_author_info}
 \title{Get Complete Author Information and ID from Scopus}
 \usage{
-get_complete_author_info(last_name, first_name = NULL, affil_id = NULL,
-  api_key = NULL, http = "https://api.elsevier.com/content/search/author",
+get_complete_author_info(last_name = NULL, first_name = NULL,
+  affil_id = NULL, affil_name = NULL, api_key = NULL,
+  http = "https://api.elsevier.com/content/search/author",
   query = NULL, verbose = TRUE, au_id = NULL, ...)
 }
 \arguments{
@@ -14,6 +15,8 @@ get_complete_author_info(last_name, first_name = NULL, affil_id = NULL,
 \item{first_name}{first name of author}
 
 \item{affil_id}{ID of affiliation (optional)}
+
+\item{affil_name}{name of affiliation}
 
 \item{api_key}{Elsevier API key}
 
@@ -34,4 +37,12 @@ List of information
 \description{
 Uses SCOPUS author search to identify author identification
 information
+}
+\examples{
+if (have_api_key()) {
+res = get_complete_author_info(
+last_name = "Muschelli",
+first_name = "John",
+verbose = FALSE)
+}
 }
