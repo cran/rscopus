@@ -2,10 +2,13 @@
 % Please edit documentation in R/citation_retrieval.R
 \name{citation_retrieval}
 \alias{citation_retrieval}
+\alias{parse_citation_retrieval}
 \title{SCOPUS Citation Retrieval}
 \usage{
 citation_retrieval(scopus_id = NULL, pii = NULL, doi = NULL,
-  pubmed_id = NULL, ...)
+  pubmed_id = NULL, date_range = NULL, ...)
+
+parse_citation_retrieval(result)
 }
 \arguments{
 \item{scopus_id}{Scopus Identifier}
@@ -16,7 +19,12 @@ citation_retrieval(scopus_id = NULL, pii = NULL, doi = NULL,
 
 \item{pubmed_id}{Scopus Identifier}
 
+\item{date_range}{date range to specify, must be length 2}
+
 \item{...}{Arguments to be passed to \code{\link{generic_elsevier_api}}}
+
+\item{result}{result from \code{\link{citation_retrieval}}, which
+has an element of \code{content}}
 }
 \value{
 List of elements, similar to \code{\link{generic_elsevier_api}}
@@ -25,11 +33,18 @@ List of elements, similar to \code{\link{generic_elsevier_api}}
 SCOPUS Citation Retrieval
 }
 \examples{
-api_key = get_api_key(NULL, error = FALSE)
-if (!is.null(api_key)){
-   x = citation_retrieval(pii = "S1053811915002700",
+api_key = Sys.getenv("Elsevier_API_Interactive")
+set_api_key(api_key)
+if (!is.null(api_key) & nchar(api_key) > 0){
+   result = citation_retrieval(pii = c("S0140673616324102",
+   "S0014579301033130"),
    verbose = FALSE)
+   if (httr::status_code(result$get_statement) < 400) {
+      res = parse_citation_retrieval(result)
+   }
+
 }
+set_api_key(NULL)
 }
 \seealso{
 \code{\link{generic_elsevier_api}}

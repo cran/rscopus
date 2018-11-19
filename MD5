@@ -1,6 +1,6 @@
-1c1f3cda398a934fddaa0605fae6d6c8 *DESCRIPTION
-7089058b81f246f8354640d7eca4dc27 *NAMESPACE
-539180675c3beffa2d5fbc4398d255d4 *NEWS.md
+29fcc0bad2647eec75bb637e819d5455 *DESCRIPTION
+56aa88342218434440815b48196d405c *NAMESPACE
+1379c704dd53b18346e5ac7ebc3d5f64 *NEWS.md
 8c8d32e55fba18ba57809551644a121a *R/aaa_utils.R
 98f3fc7c87ec994417d76b0e82e061ec *R/abstract_retrieval.R
 34811ae4022a6dcdc0f1f58ef49b1cd4 *R/affil_df.R
@@ -9,10 +9,10 @@ faaf379b58deab1f821cc133942fd9c7 *R/affil_search.R
 ad5ee0f4247301c8390fdfadc09b6303 *R/affiliation_retrieval.R
 5c1db7ada7b0d947dcf3e6f5294a3f12 *R/all_possible_affils.R
 11da8284ad4dc9bb5a26f3cfc30443cb *R/article_retrieval.R
-c27661bc4c4b49fc6d3991ce700d2ea7 *R/author_df.R
+f7a180d7793bd0b274c76a4c2b81af68 *R/author_df.R
 b8d980b4e96c94dc55535ba2612c2812 *R/author_retrieval.R
 043457fa75515a0298c545c1f7382b5c *R/author_search.R
-d07f3644d8913b0dcb2528a8b92e792e *R/citation_retrieval.R
+0911792487b89704bb3a0c2604401549 *R/citation_retrieval.R
 982ef361987f7d1c15d87e76471925bf *R/elsevier_authenticate.R
 34baf33f38e695c574f3ababd71594f6 *R/embase_retrieval.R
 45eef03bd53c8cad67a66b029554e77f *R/entitlement_retrieval.R
@@ -47,7 +47,7 @@ f7cc57bfddfdcbe5da8b2599eb70295c *man/article_retrieval.Rd
 66b85e166b5d962525e05158ad81679b *man/author_retrieval.Rd
 4e379f1425fb1bea5aa982ae994e18fd *man/author_search.Rd
 73af8976e353c80dc9bab8bf7336503e *man/author_search_by_affil.Rd
-aa93e812b0261a23ea77c4497566b7b9 *man/citation_retrieval.Rd
+f8686f0a124b5b08c6c71fa3da5e0a90 *man/citation_retrieval.Rd
 6bd6a6fb95c37562f5be4853025de0f2 *man/collapse_affil.Rd
 dcbccbb21df2c70a641094b4c093c28f *man/complete_multi_author_info.Rd
 23a476760d7d1d3fc435fd3a5674f0d7 *man/elsevier_authenticate.Rd
