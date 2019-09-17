@@ -12,6 +12,11 @@
 #' @param au_id Author ID number, will override first/last combination if
 #' specified
 #' @param affil_name name of affiliation
+#' @param count maximum number of records to retrieve
+#' @param start index to start on.  Only necessary if a large number of
+#' records retrieved
+#' @param headers Headers passed to \code{\link{add_headers}},
+#' passed to \code{\link{GET}}
 #' @param ... options to pass to \code{\link{GET}}
 #' @importFrom httr GET content
 #' @importFrom utils URLencode
@@ -32,8 +37,11 @@ get_complete_author_info <- function(
   api_key = NULL, # Elsevier API key
   http = "https://api.elsevier.com/content/search/author", # Author API http
   query = NULL,
+  count = 200,
+  start = 0,
   verbose = TRUE,
   au_id = NULL,
+  headers = NULL,
   ...
 ){
   api_key = get_api_key(api_key)
@@ -60,7 +68,9 @@ get_complete_author_info <- function(
     if (is.null(affil_id)) {
       res = get_affiliation_info(
         affil_id = affil_id,
-        affil_name = affil_name)
+        affil_name = affil_name,
+        api_key = api_key,
+        headers = headers)
       if (nrow(res) > 0) {
         res = res[1,]
         message(
@@ -80,6 +90,8 @@ get_complete_author_info <- function(
   # Need this way to not escape the `+` sign in the query
   url = paste0(http, "?query=", reg_query,
                "&APIKey=", api_key)
+  url = paste0(url, "&count=", count)
+  url = paste0(url, "&start=", start)
   if (verbose) {
     parsed_url = httr::parse_url(url)
     parsed_url$query$APIKey = NULL
@@ -87,11 +99,29 @@ get_complete_author_info <- function(
     message(paste0("HTTP specified is (without API key): ",
                    parsed_url, "\n"))
   }
-  r = GET(url,
-          add_headers(
-            "X-ELS-ResourceVersion" = "allexpand"),
+  headers = c("X-ELS-ResourceVersion" = "allexpand",
+              headers)
+  hdrs = do.call(httr::add_headers, args = as.list(headers))
+
+  r = httr::GET(url,
+          hdrs,
           ...)
   cr = content(r)
+  tr = cr$`search-results`$`opensearch:totalResults`
+  if (!is.null(tr)) {
+    tr = as.numeric(tr)
+    if (tr > count) {
+      message(paste0("Total number of results: ", tr))
+      message(paste0("Count retrieved: ", count))
+      warning(paste0(
+        "Total number of results > count, may need to run ",
+        "again with start different to retrieve all results, ",
+        "for example ", "get_complete_author_info(..., start = ",
+        count + 1, ")")
+      )
+
+    }
+  }
   # xcr = cr
   if (!is.null(cr$`service-error`)) {
     print(cr)

@@ -23,6 +23,9 @@
 #' way before version 0.5.10.9001
 #' @param scrub Should `scrub_identifier` be run on the identifier?
 #' @param ... Arguments to be passed to \code{\link{author_search}}
+#' @param headers Headers passed to \code{\link{add_headers}},
+#' passed to \code{\link{GET}}
+#'
 #' @export
 #' @seealso \code{\link{get_author_info}}
 #' @return List of entries from SCOPUS
@@ -45,6 +48,7 @@ author_df = function(
   count = 25,
   general = TRUE,
   scrub = FALSE,
+  headers = NULL,
   ...){
 
   L = author_data(au_id = au_id,
@@ -58,6 +62,7 @@ author_df = function(
                   count = count,
                   general = general,
                   scrub = scrub,
+                  headers = headers,
                   ... = ...)
   df = L$df
 
@@ -80,6 +85,7 @@ author_list = function(au_id = NULL, last_name = NULL,
                        http = "https://api.elsevier.com/content/search/scopus",
                        view = "COMPLETE",
                        count = 25,
+                       headers = NULL,
                        ...){
 
   api_key = get_api_key(api_key)
@@ -88,7 +94,8 @@ author_list = function(au_id = NULL, last_name = NULL,
                           first_name = first_name,
                           last_name = last_name,
                           api_key = api_key,
-                          verbose = verbose)
+                          verbose = verbose,
+                          headers = headers)
 
   first_name = L$first_name
   last_name = L$last_name
@@ -101,10 +108,13 @@ author_list = function(au_id = NULL, last_name = NULL,
                           view = view,
                           http = http,
                           count = count,
+                          headers = headers,
                           ...)
   entries$au_id = au_id
   entries$first_name = first_name
   entries$last_name = last_name
+
+
 
   return(entries)
 }
@@ -172,6 +182,9 @@ author_data = function(...,
 #' @param api_key Elsevier API key
 #' @param affil_id ID of affiliation (optional)
 #' @param verbose Print diagnostic messages
+#' @param headers Headers passed to \code{\link{add_headers}},
+#' passed to \code{\link{GET}}
+#'
 #' @return List of first/last name and author ID
 #' @note This function is really to avoid duplication
 #' @export
@@ -179,7 +192,9 @@ process_author_name = function(
   au_id = NULL, last_name = NULL,
   first_name = NULL,
   affil_id = NULL,
-  api_key = NULL, verbose = TRUE) {
+  api_key = NULL,
+  verbose = TRUE,
+  headers = NULL) {
 
   if (is.null(last_name) &
       is.null(first_name) &
@@ -200,22 +215,28 @@ process_author_name = function(
     } else if (first_name %in% c("", NA)) {
       first_name = NULL
     }
-    auth_name = get_author_info(
+    if (length(last_name) == 0) {
+      last_name = NULL
+    } else if (last_name %in% c("", NA)) {
+      last_name = NULL
+    }
+    author_name = get_author_info(
       last_name = last_name,
       first_name = first_name,
       api_key = api_key, verbose = verbose,
-      affil_id = affil_id)
-    if (NROW(auth_name) == 0) {
+      affil_id = affil_id,
+      headers = headers)
+    if (NROW(author_name) == 0) {
       stop("No author name found")
     }
-    if (all(is.na(auth_name$au_id))) {
+    if (all(is.na(author_name$au_id))) {
       stop("No author name found")
     }
     if (verbose) {
       message("Authors found:")
-      print(auth_name[1,])
+      print(author_name[1,])
     }
-    au_id = auth_name$au_id[1]
+    au_id = author_name$au_id[1]
   }
   if (is.na(au_id) | is.null(au_id)) {
     stop("AU-ID not found, must be specified - names didn't work")

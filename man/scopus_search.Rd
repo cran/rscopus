@@ -9,7 +9,8 @@
 scopus_search(query, api_key = NULL, count = 200,
   view = c("STANDARD", "COMPLETE"), start = 0, verbose = TRUE,
   max_count = 20000,
-  http = "https://api.elsevier.com/content/search/scopus", ...)
+  http = "https://api.elsevier.com/content/search/scopus",
+  headers = NULL, wait_time = 0, ...)
 
 sciencedirect_search(count = 100, ...)
 
@@ -35,6 +36,12 @@ below 25 for COMPLETE views, see
 
 \item{http}{Address for scopus API}
 
+\item{headers}{additional headers to be added to
+\code{\link{add_headers}}}
+
+\item{wait_time}{The time in seconds to wait across consecutive
+requests of a single search (when records > 25)}
+
 \item{...}{Arguments to be passed to the query list for
 \code{\link{GET}}}
 }
@@ -56,9 +63,9 @@ head(df$df)
 sci_res = sciencedirect_search(query = "heart+attack AND text(liver)",
 max_count = 30, count = 25)
 sci_df = gen_entries_to_df(sci_res$entries)
-
+Sys.sleep(2)
 nt = sciencedirect_search(query = "title(neurotoxin)", max_count = 20,
-count = 10)
+count = 10, wait_time = 1)
 nt_df = gen_entries_to_df(nt$entries)
 nt_df = nt_df$df
 }

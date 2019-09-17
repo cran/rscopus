@@ -16,8 +16,13 @@
 #' @param max_count Maximum count of records to be returned.
 #' @param view type of view to give, see
 #' \url{https://api.elsevier.com/documentation/ScopusSearchAPI.wadl}
+#' @param headers additional headers to be added to
+#' \code{\link{add_headers}}
 #' @param ... Arguments to be passed to the query list for
 #' \code{\link{GET}}
+#' @param wait_time The time in seconds to wait across consecutive
+#' requests of a single search (when records > 25)
+#'
 #' @export
 #' @return List of entries from SCOPUS
 #' @examples
@@ -29,9 +34,9 @@
 #' sci_res = sciencedirect_search(query = "heart+attack AND text(liver)",
 #' max_count = 30, count = 25)
 #' sci_df = gen_entries_to_df(sci_res$entries)
-#'
+#' Sys.sleep(2)
 #' nt = sciencedirect_search(query = "title(neurotoxin)", max_count = 20,
-#' count = 10)
+#' count = 10, wait_time = 1)
 #' nt_df = gen_entries_to_df(nt$entries)
 #' nt_df = nt_df$df
 #' }
@@ -44,6 +49,8 @@ scopus_search <- function(
   verbose = TRUE,
   max_count = 20000,
   http = "https://api.elsevier.com/content/search/scopus",
+  headers = NULL,
+  wait_time = 0,
   ...){
 
   api_key = get_api_key(api_key)
@@ -61,7 +68,8 @@ scopus_search <- function(
   # Wrapper to go through all the pages
   get_results = function(query, start = 0,
                          count = count,
-                         verbose = TRUE, ...){
+                         verbose = TRUE,
+                         headers = NULL, ...){
     q = list(
       query = query,
       "APIKey" = api_key,
@@ -75,10 +83,13 @@ scopus_search <- function(
       message("The query list is: ")
       print(dput(print_q))
     }
+    hdrs = c(
+      "X-ELS-ResourceVersion" = "allexpand",
+      headers
+    )
     r = GET(http,
             query = q,
-            add_headers(
-              "X-ELS-ResourceVersion" = "allexpand")
+            add_headers(hdrs)
     )
     if (verbose) {
       parsed_url = httr::parse_url(r$url)
@@ -94,6 +105,7 @@ scopus_search <- function(
 
   cr = get_results(query, start = init_start, count = count,
                    verbose = verbose,
+                   headers = headers,
                    ...)
   all_get = cr$get_statement
   cr = cr$content
@@ -134,9 +146,13 @@ scopus_search <- function(
                           initial = 1, style = 3)
     }
     for (irun in seq(n_runs - 1)) {
+      if (wait_time > 0) {
+        Sys.sleep(wait_time)
+      }
       start = irun * count + init_start
       cr = get_results(query, start = start, count = count,
                        verbose = FALSE,
+                       headers = headers,
                        ...)
       all_get = c(all_get, cr$get_statement)
       cr = cr$content
@@ -157,7 +173,7 @@ scopus_search <- function(
     message(paste0("Number of Output Entries are ", length(all_entries),
                    "\n"))
   }
-  if (total_results != length(all_entries)) {
+  if (total_results != length(all_entries) & total_results > 0) {
     warning("May not have received all entries")
   }
   L = list(entries = all_entries, total_results = xtotal_results)
