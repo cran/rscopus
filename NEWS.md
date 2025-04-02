@@ -1,3 +1,11 @@
+# rscopus 0.8.0
+
+* Fixing the \link issues with packages.
+
+# rscopus 0.7.0
+
+* Fixed bug in bibtex core
+
 # rscopus 0.6.6
 
 * Deprecated `entries_to_df`, addresses #27.

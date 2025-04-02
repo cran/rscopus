@@ -1,10 +1,11 @@
 #' SCOPUS Citation Retrieval
 #'
 #' @param scopus_id Scopus Identifier
-#' @param pubmed_id Scopus Identifier
+#' @param pubmed_id PubMed Identifier
 #' @param pii Scopus Identifier
 #' @param doi Scopus Identifier
 #' @param date_range date range to specify, must be length 2
+#' @param exclude either exclude-self or exclude-books for exclusion of citation
 #' @param ... Arguments to be passed to \code{\link{generic_elsevier_api}}
 #' @export
 #' @seealso \code{\link{generic_elsevier_api}}
@@ -13,12 +14,12 @@
 #' api_key = Sys.getenv("Elsevier_API_Interactive")
 #' set_api_key(api_key)
 #' if (!is.null(api_key) & nchar(api_key) > 0){
-#'    result = citation_retrieval(pii = c("S0140673616324102",
-#'    "S0014579301033130"),
-#'    verbose = FALSE)
-#'    if (httr::status_code(result$get_statement) < 400) {
-#'       res = parse_citation_retrieval(result)
-#'    }
+#'   result = citation_retrieval(pii = c("S0140673616324102",
+#'                                       "S0014579301033130"),
+#'                               verbose = FALSE)
+#'   if (httr::status_code(result$get_statement) < 400) {
+#'     res = parse_citation_retrieval(result)
+#'   }
 #'
 #' }
 #' set_api_key(NULL)
@@ -28,6 +29,7 @@ citation_retrieval <- function(
   doi = NULL,
   pubmed_id = NULL,
   date_range = NULL,
+  exclude = NULL,
   ...
 ){
 
@@ -62,6 +64,9 @@ citation_retrieval <- function(
   args$doi = doi
   pubmed_id = func(pubmed_id)
   args$pubmed_id = pubmed_id
+  if (!is.null(exclude)) {
+    args$exclude = match.arg(exclude, choices = c("exclude-self", "exclude-books"))
+  }
   s = do.call(generic_elsevier_api, args = args)
 
   return(s)
@@ -79,10 +84,10 @@ parse_citation_retrieval = function(result) {
   ident = x$`identifier-legend`$identifier
   ident = lapply(ident, function(z) {
     lapply(z, function(r){
-    if (is.null(r)) {
-      r = NA
-    }
-    return(r)
+      if (is.null(r)) {
+        r = NA
+      }
+      return(r)
     })
   })
   ident = lapply(ident, as.data.frame, stringsAsFactors = FALSE)
@@ -90,9 +95,24 @@ parse_citation_retrieval = function(result) {
   ident = bind_rows(ident, .id = "identifier")
   cinfo = x$citeInfoMatrix$citeInfoMatrixXML$citationMatrix$citeInfo
   hdr = x$citeColumnTotalXML$citeCountHeader
-  authors = lapply(cinfo, function(r) {
-    auth = bind_rows(lapply(r$author, as.data.frame,
-                            stringsAsFactors = FALSE))
+  json_as_data_frame = function(x) {
+    jsonlite::fromJSON(jsonlite::toJSON(x), simplifyVector = TRUE, flatten = TRUE)
+  }
+  make_na = function(r) {
+    if (length(r) == 0) {
+      return(NA)
+    }
+    r
+  }
+  authors = purrr::map(cinfo, function(r) {
+    if (is.null(r$author)) {
+      return(NULL)
+    }
+    r$author = lapply(r$author, function(z) lapply(z, make_na))
+    r$author = lapply(r$author, json_as_data_frame)
+    r$author = lapply(r$author, as.data.frame,
+                      stringsAsFactors = FALSE)
+    auth = bind_rows(r$author)
   })
   names(authors) =  1:length(authors)
   authors = bind_rows(authors, .id = "identifier")

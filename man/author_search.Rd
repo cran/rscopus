@@ -4,11 +4,22 @@
 \alias{author_search}
 \title{Search Author Content on SCOPUS}
 \usage{
-author_search(au_id, api_key = NULL,
-  http = "https://api.elsevier.com/content/search/author", count = 200,
-  start = 0, verbose = TRUE, facets = "subjarea(sort=fd,count=350)",
-  searcher = "AU-ID", max_count = Inf, view = c("STANDARD",
-  "COMPLETE"), add_query = NULL, headers = NULL, wait_time = 0, ...)
+author_search(
+  au_id,
+  api_key = NULL,
+  http = "https://api.elsevier.com/content/search/author",
+  count = 200,
+  start = 0,
+  verbose = TRUE,
+  facets = "subjarea(sort=fd,count=350)",
+  searcher = "AU-ID",
+  max_count = Inf,
+  view = c("STANDARD", "COMPLETE"),
+  add_query = NULL,
+  headers = NULL,
+  wait_time = 0,
+  ...
+)
 }
 \arguments{
 \item{au_id}{Author ID number}
@@ -33,18 +44,18 @@ know exactly what the API calls for.}
 \item{max_count}{Maximum count of records to be returned.}
 
 \item{view}{type of view to give, see
-\url{https://api.elsevier.com/documentation/AuthorSearchAPI.wadl}}
+\url{https://dev.elsevier.com/documentation/AuthorSearchAPI.wadl}}
 
 \item{add_query}{Things to add to the query parameter for the request}
 
 \item{headers}{additional headers to be added to
-\code{\link{add_headers}}}
+\code{\link[httr]{add_headers}}}
 
 \item{wait_time}{The time in seconds to wait across consecutive
 requests of a single search (when records > 25)}
 
 \item{...}{Arguments to be passed to the query list for
-\code{\link{GET}}}
+\code{\link[httr]{GET}}}
 }
 \value{
 List of entries from SCOPUS

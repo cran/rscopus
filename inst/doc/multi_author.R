@@ -1,29 +1,32 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   cache = TRUE
 )
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library("rscopus")
 library("dplyr")
 library("tidyr")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 have_api_key()
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
+authorized = is_elsevier_authorized()
+
+## -----------------------------------------------------------------------------
 rscopus::subject_areas()
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # create the query
 Query <- paste0("AF-ID(60006514) AND SUBJAREA(", 
                 subject_areas(), 
                 ") AND PUBYEAR = 2018 AND ACCESSTYPE(OA)")
 
-## ------------------------------------------------------------------------
-if (have_api_key()) {
+## -----------------------------------------------------------------------------
+if (authorized) {
   make_query = function(subj_area) {
     paste0("AF-ID(60006514) AND SUBJAREA(", 
            subj_area,
@@ -43,8 +46,8 @@ if (have_api_key()) {
   total_results = 0
 }
 
-## ------------------------------------------------------------------------
-if (have_api_key()) {
+## -----------------------------------------------------------------------------
+if (authorized) {
   
   # areas = subject_areas()[12:13]  
   areas = c("ENER", "ENGI")
@@ -121,7 +124,7 @@ if (have_api_key()) {
   
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 if (total_results > 0) {
   cn = colnames(MainEntry)
   cn[grep("fund", tolower(cn))]
@@ -140,7 +143,7 @@ if (total_results > 0) {
   osuFunders
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 if (total_results > 0) {
 
   # if there are 100+ authors, you have to use the abstract_retrieval function to get the full author data
@@ -151,7 +154,7 @@ if (total_results > 0) {
   print(run_multi)
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 if (total_results > 0) {
   if (run_multi) {
     
@@ -172,7 +175,7 @@ if (total_results > 0) {
   }
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 if (total_results > 0) {
   # ids = MainEntry_99auth$scopus_id[1:3]
   ids = MainEntry_99auth$scopus_id
@@ -234,7 +237,7 @@ if (total_results > 0) {
   print(setdiff(colnames(Authors), colnames(all_df)))
   
   # grab only relevant columns
-  all_df = all_df[, colnames(Authors)]
+  all_df = all_df[, intersect(colnames(Authors), colnames(all_df))]
   
   # remove the old entries
   Authors = anti_join(Authors, MainEntry_99auth_id)
@@ -259,5 +262,6 @@ if (total_results > 0) {
   
   MainEntry = anti_join(MainEntry, MainEntry_99auth_id)
   MainEntry = full_join(MainEntry, MainEntry_99auth)
+  MainEntry
 }
 

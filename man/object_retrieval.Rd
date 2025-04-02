@@ -7,13 +7,24 @@
 \alias{download_objects}
 \title{ScienceDirect Object Retrieval}
 \usage{
-object_retrieval(id, identifier = c("scopus_id", "eid", "doi", "pii",
-  "pubmed_id"), ref = NULL, http_end = NULL, ...)
+object_retrieval(
+  id,
+  identifier = c("scopus_id", "eid", "doi", "pii", "pubmed_id"),
+  ref = NULL,
+  http_end = NULL,
+  ...
+)
 
 process_object_retrieval(res)
 
-download_object(url, api_key = NULL, api_key_error = TRUE,
-  verbose = TRUE, headers = NULL, ...)
+download_object(
+  url,
+  api_key = NULL,
+  api_key_error = TRUE,
+  verbose = TRUE,
+  headers = NULL,
+  ...
+)
 
 download_objects(url, ...)
 }
@@ -28,7 +39,7 @@ download_objects(url, ...)
 See \code{\link{generic_elsevier_api}}}
 
 \item{...}{Arguments to be passed to \code{\link{generic_elsevier_api}}
-or \code{\link{GET}}}
+or \code{\link[httr]{GET}}}
 
 \item{res}{result from \code{\link{object_retrieval}}}
 
@@ -40,8 +51,8 @@ or \code{\link{GET}}}
 
 \item{verbose}{Print messages from specification}
 
-\item{headers}{Headers passed to \code{\link{add_headers}},
-passed to \code{\link{GET}}}
+\item{headers}{Headers passed to \code{\link[httr]{add_headers}},
+passed to \code{\link[httr]{GET}}}
 }
 \value{
 List of elements, similar to \code{\link{generic_elsevier_api}}
@@ -53,12 +64,15 @@ retrieval of an object from the Elsevier Object Retrieval API
 }
 \examples{
 api_key = get_api_key(NULL, error = FALSE)
-if (!is.null(api_key)){
+authorized = is_elsevier_authorized()
+if (have_api_key()){
    x = object_retrieval("S1053811915002700", identifier = "pii",
    verbose = FALSE)
    df = process_object_retrieval(x)
    df = df[ grepl("image/jpeg", df$mime_type),,drop = FALSE ]
    df = df[ df$type \%in\% "IMAGE-HIGH-RES",,drop = FALSE ]
+}
+if (authorized) {
    res = download_object(df$url[1])
    if (interactive()) {
       browseURL(res$outfile)

@@ -7,21 +7,44 @@
 \alias{author_data}
 \title{Search Author Content on SCOPUS}
 \usage{
-author_df(au_id = NULL, last_name = NULL, first_name = NULL,
-  api_key = NULL, verbose = TRUE, all_author_info = FALSE,
+author_df(
+  au_id = NULL,
+  last_name = NULL,
+  first_name = NULL,
+  api_key = NULL,
+  verbose = TRUE,
+  all_author_info = FALSE,
   http = "https://api.elsevier.com/content/search/scopus",
-  view = "COMPLETE", count = 25, general = TRUE, scrub = FALSE,
-  headers = NULL, ...)
+  view = "COMPLETE",
+  count = 25,
+  general = TRUE,
+  scrub = FALSE,
+  headers = NULL,
+  ...
+)
 
 author_df_orig(..., general = FALSE)
 
-author_list(au_id = NULL, last_name = NULL, first_name = NULL,
-  api_key = NULL, verbose = TRUE,
+author_list(
+  au_id = NULL,
+  last_name = NULL,
+  first_name = NULL,
+  api_key = NULL,
+  verbose = TRUE,
   http = "https://api.elsevier.com/content/search/scopus",
-  view = "COMPLETE", count = 25, headers = NULL, ...)
+  view = "COMPLETE",
+  count = 25,
+  headers = NULL,
+  ...
+)
 
-author_data(..., verbose = TRUE, all_author_info = FALSE,
-  general = TRUE, scrub = FALSE)
+author_data(
+  ...,
+  verbose = TRUE,
+  all_author_info = FALSE,
+  general = TRUE,
+  scrub = FALSE
+)
 }
 \arguments{
 \item{au_id}{Author ID number. Overrides any first/last name argument}
@@ -41,7 +64,7 @@ author given}
 \item{http}{Address for scopus api}
 
 \item{view}{type of view to give, see
-\url{https://api.elsevier.com/documentation/ScopusSearchAPI.wadl}}
+\url{https://dev.elsevier.com/documentation/ScopusSearchAPI.wadl}}
 
 \item{count}{number of records to retrieve (below 25, see
 \url{https://dev.elsevier.com/api_key_settings.html})}
@@ -51,8 +74,8 @@ way before version 0.5.10.9001}
 
 \item{scrub}{Should `scrub_identifier` be run on the identifier?}
 
-\item{headers}{Headers passed to \code{\link{add_headers}},
-passed to \code{\link{GET}}}
+\item{headers}{Headers passed to \code{\link[httr]{add_headers}},
+passed to \code{\link[httr]{GET}}}
 
 \item{...}{Arguments to be passed to \code{\link{author_search}}}
 }
@@ -72,7 +95,7 @@ entries as well as
 the \code{data.frame}.
 }
 \examples{
-if (have_api_key()) {
+if (is_elsevier_authorized()) {
 res = author_df(last_name = "Muschelli", first_name = "John",
 verbose = FALSE)
 }

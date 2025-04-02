@@ -16,21 +16,21 @@
 #' author given
 #' @param http Address for scopus api
 #' @param view type of view to give, see
-#' \url{https://api.elsevier.com/documentation/ScopusSearchAPI.wadl}
+#' \url{https://dev.elsevier.com/documentation/ScopusSearchAPI.wadl}
 #' @param count number of records to retrieve (below 25, see
 #' \url{https://dev.elsevier.com/api_key_settings.html})
 #' @param general Should \code{\link{gen_entries_to_df}} instead of the
 #' way before version 0.5.10.9001
 #' @param scrub Should `scrub_identifier` be run on the identifier?
 #' @param ... Arguments to be passed to \code{\link{author_search}}
-#' @param headers Headers passed to \code{\link{add_headers}},
-#' passed to \code{\link{GET}}
+#' @param headers Headers passed to \code{\link[httr]{add_headers}},
+#' passed to \code{\link[httr]{GET}}
 #'
 #' @export
 #' @seealso \code{\link{get_author_info}}
 #' @return List of entries from SCOPUS
 #' @examples
-#' if (have_api_key()) {
+#' if (is_elsevier_authorized()) {
 #' res = author_df(last_name = "Muschelli", first_name = "John",
 #' verbose = FALSE)
 #' }
@@ -182,8 +182,8 @@ author_data = function(...,
 #' @param api_key Elsevier API key
 #' @param affil_id ID of affiliation (optional)
 #' @param verbose Print diagnostic messages
-#' @param headers Headers passed to \code{\link{add_headers}},
-#' passed to \code{\link{GET}}
+#' @param headers Headers passed to \code{\link[httr]{add_headers}},
+#' passed to \code{\link[httr]{GET}}
 #'
 #' @return List of first/last name and author ID
 #' @note This function is really to avoid duplication

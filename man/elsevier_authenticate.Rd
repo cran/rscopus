@@ -2,10 +2,22 @@
 % Please edit documentation in R/elsevier_authenticate.R
 \name{elsevier_authenticate}
 \alias{elsevier_authenticate}
+\alias{is_elsevier_guest}
+\alias{is_elsevier_authorized}
 \title{Authenticate API Key and get Token}
 \usage{
-elsevier_authenticate(api_key = NULL, api_key_error = TRUE,
-  choice = NULL, verbose = TRUE, headers = NULL, ...)
+elsevier_authenticate(
+  api_key = NULL,
+  api_key_error = TRUE,
+  choice = NULL,
+  verbose = TRUE,
+  headers = NULL,
+  ...
+)
+
+is_elsevier_guest(...)
+
+is_elsevier_authorized(...)
 }
 \arguments{
 \item{api_key}{Elsevier API key}
@@ -17,10 +29,10 @@ See \url{https://dev.elsevier.com/tecdoc_api_authentication.html}}
 
 \item{verbose}{Print messages from specification}
 
-\item{headers}{Headers passed to \code{\link{add_headers}},
-passed to \code{\link{GET}}}
+\item{headers}{Headers passed to \code{\link[httr]{add_headers}},
+passed to \code{\link[httr]{GET}}}
 
-\item{...}{Additional arguments to send to \code{\link{GET}}.}
+\item{...}{Additional arguments to send to \code{\link[httr]{GET}}.}
 }
 \value{
 List of content, the \code{GET} request,

@@ -5,8 +5,15 @@
 \alias{parse_citation_retrieval}
 \title{SCOPUS Citation Retrieval}
 \usage{
-citation_retrieval(scopus_id = NULL, pii = NULL, doi = NULL,
-  pubmed_id = NULL, date_range = NULL, ...)
+citation_retrieval(
+  scopus_id = NULL,
+  pii = NULL,
+  doi = NULL,
+  pubmed_id = NULL,
+  date_range = NULL,
+  exclude = NULL,
+  ...
+)
 
 parse_citation_retrieval(result)
 }
@@ -17,9 +24,11 @@ parse_citation_retrieval(result)
 
 \item{doi}{Scopus Identifier}
 
-\item{pubmed_id}{Scopus Identifier}
+\item{pubmed_id}{PubMed Identifier}
 
 \item{date_range}{date range to specify, must be length 2}
+
+\item{exclude}{either exclude-self or exclude-books for exclusion of citation}
 
 \item{...}{Arguments to be passed to \code{\link{generic_elsevier_api}}}
 
@@ -36,12 +45,12 @@ SCOPUS Citation Retrieval
 api_key = Sys.getenv("Elsevier_API_Interactive")
 set_api_key(api_key)
 if (!is.null(api_key) & nchar(api_key) > 0){
-   result = citation_retrieval(pii = c("S0140673616324102",
-   "S0014579301033130"),
-   verbose = FALSE)
-   if (httr::status_code(result$get_statement) < 400) {
-      res = parse_citation_retrieval(result)
-   }
+  result = citation_retrieval(pii = c("S0140673616324102",
+                                      "S0014579301033130"),
+                              verbose = FALSE)
+  if (httr::status_code(result$get_statement) < 400) {
+    res = parse_citation_retrieval(result)
+  }
 
 }
 set_api_key(NULL)

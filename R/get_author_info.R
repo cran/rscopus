@@ -15,15 +15,15 @@
 #' @param count maximum number of records to retrieve
 #' @param start index to start on.  Only necessary if a large number of
 #' records retrieved
-#' @param headers Headers passed to \code{\link{add_headers}},
-#' passed to \code{\link{GET}}
-#' @param ... options to pass to \code{\link{GET}}
+#' @param headers Headers passed to \code{\link[httr]{add_headers}},
+#' passed to \code{\link[httr]{GET}}
+#' @param ... options to pass to \code{\link[httr]{GET}}
 #' @importFrom httr GET content
 #' @importFrom utils URLencode
 #' @export
 #' @return List of information
 #' @examples
-#' if (have_api_key()) {
+#' if (is_elsevier_authorized()) {
 #' res = get_complete_author_info(
 #' last_name = "Muschelli",
 #' first_name = "John",

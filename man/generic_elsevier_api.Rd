@@ -4,15 +4,23 @@
 \alias{generic_elsevier_api}
 \title{Generic Elsevier Search}
 \usage{
-generic_elsevier_api(query = NULL, type = c("search", "article",
-  "entitlement", "recommendation", "object", "fragment", "abstract",
-  "affiliation", "embase", "author", "serial", "nonserial", "subject",
-  "holdings", "citation-count", "citations", "metadata", "ev",
-  "ev_records", "analytics"), search_type = c("affiliation", "author",
-  "scopus", "scidir", "scidir-object", "sciencedirect", "plumx"),
-  api_key = NULL, headers = NULL, content_type = c("content",
-  "feedback"), root_http = "https://api.elsevier.com", http_end = NULL,
-  verbose = TRUE, api_key_error = TRUE, ...)
+generic_elsevier_api(
+  query = NULL,
+  type = c("search", "article", "entitlement", "recommendation", "object", "fragment",
+    "abstract", "affiliation", "embase", "author", "serial", "nonserial", "subject",
+    "holdings", "citation-count", "citations", "metadata", "ev", "ev_records",
+    "analytics"),
+  search_type = c("affiliation", "author", "scopus", "scidir", "scidir-object",
+    "sciencedirect", "plumx"),
+  api_key = NULL,
+  headers = NULL,
+  content_type = c("content", "feedback"),
+  root_http = "https://api.elsevier.com",
+  http_end = NULL,
+  verbose = TRUE,
+  api_key_error = TRUE,
+  ...
+)
 }
 \arguments{
 \item{query}{Query to run, not overall query, but `queryParam` query}
@@ -24,8 +32,8 @@ See \url{https://dev.elsevier.com/api_docs.html}}
 
 \item{api_key}{Elsevier API key}
 
-\item{headers}{Headers passed to \code{\link{add_headers}},
-passed to \code{\link{GET}}}
+\item{headers}{Headers passed to \code{\link[httr]{add_headers}},
+passed to \code{\link[httr]{GET}}}
 
 \item{content_type}{Is the data content or feedback?}
 
@@ -38,7 +46,7 @@ passed to \code{\link{GET}}}
 
 \item{api_key_error}{Should there be an error if no API key?}
 
-\item{...}{Options passed to queryParam for \code{\link{GET}}}
+\item{...}{Options passed to queryParam for \code{\link[httr]{GET}}}
 }
 \value{
 List of elements, content and the \code{GET} request

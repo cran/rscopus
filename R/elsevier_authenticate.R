@@ -10,9 +10,9 @@ sc_authenticated = function(...) {
 #' @param verbose Print messages from specification
 #' @param choice Choice of which registered
 #' See \url{https://dev.elsevier.com/tecdoc_api_authentication.html}
-#' @param headers Headers passed to \code{\link{add_headers}},
-#' passed to \code{\link{GET}}
-#' @param ... Additional arguments to send to \code{\link{GET}}.
+#' @param headers Headers passed to \code{\link[httr]{add_headers}},
+#' passed to \code{\link[httr]{GET}}
+#' @param ... Additional arguments to send to \code{\link[httr]{GET}}.
 #'
 #' @return List of content, the \code{GET} request,
 #' and the token
@@ -51,12 +51,27 @@ elsevier_authenticate = function(
                 hdrs,
                 ...
   )
+  httr::warn_for_status(r)
   cr = httr::content(r)
   L = list(get_statement = r, content = cr)
   token = cr$`authenticate-response`$authtoken
-  class(token) = "token"
+  if (!is.null(token)) {
+    class(token) = "token"
+  }
   L$token = token
   L$auth_type = cr$`authenticate-response`$`@type`
   return(L)
 }
 
+#' @export
+#' @rdname elsevier_authenticate
+is_elsevier_guest = function(...) {
+  auth = elsevier_authenticate(...)
+  toupper(auth$auth_type) == "GUEST"
+}
+
+#' @export
+#' @rdname elsevier_authenticate
+is_elsevier_authorized = function(...) {
+  have_api_key() && !is_elsevier_guest(...)
+}

@@ -4,8 +4,13 @@
 \alias{get_affiliation_info}
 \title{Get Affiliation Information and ID from Scopus}
 \usage{
-get_affiliation_info(affil_id = NULL, affil_name = NULL,
-  api_key = NULL, verbose = FALSE, headers = NULL)
+get_affiliation_info(
+  affil_id = NULL,
+  affil_name = NULL,
+  api_key = NULL,
+  verbose = FALSE,
+  headers = NULL
+)
 }
 \arguments{
 \item{affil_id}{ID of affiliation}
@@ -16,8 +21,8 @@ get_affiliation_info(affil_id = NULL, affil_name = NULL,
 
 \item{verbose}{Print messages from specification}
 
-\item{headers}{Headers passed to \code{\link{add_headers}},
-passed to \code{\link{GET}}}
+\item{headers}{Headers passed to \code{\link[httr]{add_headers}},
+passed to \code{\link[httr]{GET}}}
 }
 \value{
 A \code{data.frame} of affiliation information

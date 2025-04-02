@@ -9,18 +9,21 @@
 #' @param http_end any additional end to http statement.
 #' See \code{\link{generic_elsevier_api}}
 #' @param ... Arguments to be passed to \code{\link{generic_elsevier_api}}
-#' or \code{\link{GET}}
+#' or \code{\link[httr]{GET}}
 #' @export
 #' @seealso \code{\link{generic_elsevier_api}}
 #' @return List of elements, similar to \code{\link{generic_elsevier_api}}
 #' @examples
 #' api_key = get_api_key(NULL, error = FALSE)
-#' if (!is.null(api_key)){
+#' authorized = is_elsevier_authorized()
+#' if (have_api_key()){
 #'    x = object_retrieval("S1053811915002700", identifier = "pii",
 #'    verbose = FALSE)
 #'    df = process_object_retrieval(x)
 #'    df = df[ grepl("image/jpeg", df$mime_type),,drop = FALSE ]
 #'    df = df[ df$type %in% "IMAGE-HIGH-RES",,drop = FALSE ]
+#' }
+#' if (authorized) {
 #'    res = download_object(df$url[1])
 #'    if (interactive()) {
 #'       browseURL(res$outfile)
@@ -99,8 +102,8 @@ process_object_retrieval = function(res) {
 #' @param verbose Print messages from specification
 #' @param api_key Elsevier API key
 #' @param api_key_error Should there be an error if no API key?
-#' @param headers Headers passed to \code{\link{add_headers}},
-#' passed to \code{\link{GET}}
+#' @param headers Headers passed to \code{\link[httr]{add_headers}},
+#' passed to \code{\link[httr]{GET}}
 #' @rdname object_retrieval
 download_object = function(
   url,

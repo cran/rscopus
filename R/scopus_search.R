@@ -15,11 +15,11 @@
 #' @param verbose Print diagnostic messages
 #' @param max_count Maximum count of records to be returned.
 #' @param view type of view to give, see
-#' \url{https://api.elsevier.com/documentation/ScopusSearchAPI.wadl}
+#' \url{https://dev.elsevier.com/documentation/ScopusSearchAPI.wadl}
 #' @param headers additional headers to be added to
-#' \code{\link{add_headers}}
+#' \code{\link[httr]{add_headers}}
 #' @param ... Arguments to be passed to the query list for
-#' \code{\link{GET}}
+#' \code{\link[httr]{GET}}
 #' @param wait_time The time in seconds to wait across consecutive
 #' requests of a single search (when records > 25)
 #'
@@ -27,18 +27,21 @@
 #' @return List of entries from SCOPUS
 #' @examples
 #' if (have_api_key()) {
-#' res = scopus_search(query = "all(gene)", max_count = 20,
-#' count = 10)
-#' df = gen_entries_to_df(res$entries)
-#' head(df$df)
-#' sci_res = sciencedirect_search(query = "heart+attack AND text(liver)",
-#' max_count = 30, count = 25)
-#' sci_df = gen_entries_to_df(sci_res$entries)
-#' Sys.sleep(2)
-#' nt = sciencedirect_search(query = "title(neurotoxin)", max_count = 20,
-#' count = 10, wait_time = 1)
-#' nt_df = gen_entries_to_df(nt$entries)
-#' nt_df = nt_df$df
+#'   authorized = is_elsevier_authorized()
+#'   if (authorized) {
+#'     res = scopus_search(query = "all(gene)", max_count = 20,
+#'                         count = 10)
+#'     df = gen_entries_to_df(res$entries)
+#'     head(df$df)
+#'     sci_res = sciencedirect_search(query = "heart+attack AND text(liver)",
+#'                                    max_count = 30, count = 25)
+#'     sci_df = gen_entries_to_df(sci_res$entries)
+#'     Sys.sleep(2)
+#'     nt = sciencedirect_search(query = "title(neurotoxin)", max_count = 20,
+#'                               count = 10, wait_time = 1)
+#'     nt_df = gen_entries_to_df(nt$entries)
+#'     nt_df = nt_df$df
+#'   }
 #' }
 scopus_search <- function(
   query, # Author ID number
@@ -97,6 +100,10 @@ scopus_search <- function(
       r$url = httr::build_url(parsed_url)
       print(r)
     }
+    if (httr::status_code(r) >= 400) {
+      print("Error:")
+      print(httr::content(r))
+    }
     stop_for_status(r)
     cr = content(r)$`search-results`
     L = list(get_statement = r, content = cr)
@@ -151,7 +158,7 @@ scopus_search <- function(
       }
       start = irun * count + init_start
       cr = get_results(query, start = start, count = count,
-                       verbose = FALSE,
+                       verbose = verbose > 1,
                        headers = headers,
                        ...)
       all_get = c(all_get, cr$get_statement)

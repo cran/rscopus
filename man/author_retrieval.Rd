@@ -6,16 +6,32 @@
 \alias{author_retrieval}
 \title{SCOPUS Author Retrieval}
 \usage{
-author_retrieval_id(id, identifier = c("author_id", "eid"),
-  http_end = NULL, ...)
+author_retrieval_id(
+  id,
+  identifier = c("author_id", "eid"),
+  http_end = NULL,
+  ...
+)
 
-multi_author_retrieval(id, identifier = c("author_id", "eid"),
-  http_end = NULL, ...)
+multi_author_retrieval(
+  id,
+  identifier = c("author_id", "eid"),
+  http_end = NULL,
+  ...
+)
 
-author_retrieval(au_id = NULL, last_name = NULL, first_name = NULL,
+author_retrieval(
+  au_id = NULL,
+  last_name = NULL,
+  first_name = NULL,
   view = c("LIGHT", "STANDARD", "ENHANCED", "METRICS", "ENTITLED"),
-  self_cite = c("include", "exclude"), http_end = NULL,
-  verbose = TRUE, api_key = NULL, headers = NULL, ...)
+  self_cite = c("include", "exclude"),
+  http_end = NULL,
+  verbose = TRUE,
+  api_key = NULL,
+  headers = NULL,
+  ...
+)
 }
 \arguments{
 \item{id}{Identifier for author}
@@ -35,7 +51,7 @@ See \code{\link{generic_elsevier_api}}}
 \item{first_name}{first name of author}
 
 \item{view}{Which view to see.  See
-\url{https://api.elsevier.com/documentation/AuthorRetrievalAPI.wadl}}
+\url{https://dev.elsevier.com/documentation/AuthorRetrievalAPI.wadl}}
 
 \item{self_cite}{Should self-citations be included?}
 
@@ -43,8 +59,8 @@ See \code{\link{generic_elsevier_api}}}
 
 \item{api_key}{Elsevier API key}
 
-\item{headers}{Headers passed to \code{\link{add_headers}},
-passed to \code{\link{GET}}}
+\item{headers}{Headers passed to \code{\link[httr]{add_headers}},
+passed to \code{\link[httr]{GET}}}
 }
 \value{
 List of elements, similar to
@@ -57,7 +73,7 @@ retrieval of an author from the Elsevier Author Retrieval API
 }
 \note{
 See
-\url{https://api.elsevier.com/documentation/AuthorRetrievalAPI.wadl}
+\url{https://dev.elsevier.com/documentation/AuthorRetrievalAPI.wadl}
 for documentation
 }
 \examples{
