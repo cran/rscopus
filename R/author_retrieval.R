@@ -60,16 +60,27 @@ author_retrieval_id <- function(
 multi_author_retrieval <- function(
   id,
   identifier = c("author_id", "eid"),
+  view = c("LIGHT", "STANDARD",
+           "ENHANCED", "METRICS", "ENTITLED"),
   http_end = NULL,
   ...
 ){
 
   id = gsub("AUTHOR_ID:", "", id, fixed = TRUE)
+  id = gsub("EID:", "", id, fixed = TRUE)
   id = paste(id, collapse = ",")
 
-  s = generic_elsevier_api(
+  view = match.arg(view)
+  identifier = match.arg(identifier)
+  args = list(
+    id,
     type = "author",
-    http_end = http_end, ...)
+    view = view,
+    http_end = http_end,
+    ...
+  )
+  names(args)[1] = identifier
+  s = do.call(generic_elsevier_api, args = args)
   return(s)
 }
 

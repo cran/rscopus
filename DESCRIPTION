@@ -1,7 +1,7 @@
 Package: rscopus
 Type: Package
 Title: Scopus Database 'API' Interface
-Version: 0.8.1
+Version: 0.9.0
 Authors@R: person(given = "John", family = "Muschelli", 
     role = c("aut", "cre"), email = "muschellij2@gmail.com")
 Maintainer: John Muschelli <muschellij2@gmail.com>
@@ -21,7 +21,7 @@ RoxygenNote: 7.3.2
 Encoding: UTF-8
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2025-04-02 00:17:02 UTC; johnmuschelli
+Packaged: 2025-07-30 23:02:23 UTC; jmuschel
 Author: John Muschelli [aut, cre]
 Repository: CRAN
-Date/Publication: 2025-04-02 04:40:03 UTC
+Date/Publication: 2025-07-30 23:40:02 UTC

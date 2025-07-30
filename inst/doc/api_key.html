@@ -12,7 +12,7 @@
 
 <meta name="author" content="John Muschelli" />
 
-<meta name="date" content="2025-04-01" />
+<meta name="date" content="2025-07-30" />
 
 <title>Setting up the Scopus API Key</title>
 
@@ -50,7 +50,6 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
-html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -341,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Setting up the Scopus API Key</h1>
 <h4 class="author">John Muschelli</h4>
-<h4 class="date">2025-04-01</h4>
+<h4 class="date">2025-07-30</h4>
 
 
 
@@ -416,8 +415,8 @@ problem:</p>
 <span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>  }</span>
 <span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>}</span>
 <span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="co">#&gt; @article{Muschelli2015Validatedimages,</span></span>
-<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a><span class="co">#&gt; author = {John Muschelli},</span></span>
-<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a><span class="co">#&gt; address = {Johns Hopkins Bloomberg School of Public Health; David Geffen School of Medicine at UCLA; Johns Hopkins Medical Institutions},</span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a><span class="co">#&gt; author = {John Muschelli and Natalie L. Ullman and W. Andrew Mould and Paul Vespa and Daniel F. Hanley and Ciprian M. Crainiceanu},</span></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a><span class="co">#&gt; address = {David Geffen School of Medicine at UCLA; Johns Hopkins Bloomberg School of Public Health; Johns Hopkins Medical Institutions},</span></span>
 <span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a><span class="co">#&gt; title = {Validated automatic brain extraction of head CT images},</span></span>
 <span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a><span class="co">#&gt; journal = {NeuroImage},</span></span>
 <span id="cb1-32"><a href="#cb1-32" tabindex="-1"></a><span class="co">#&gt; year = {2015},</span></span>
@@ -425,7 +424,31 @@ problem:</p>
 <span id="cb1-34"><a href="#cb1-34" tabindex="-1"></a><span class="co">#&gt; number = {},</span></span>
 <span id="cb1-35"><a href="#cb1-35" tabindex="-1"></a><span class="co">#&gt; pages = {379-385},</span></span>
 <span id="cb1-36"><a href="#cb1-36" tabindex="-1"></a><span class="co">#&gt; doi = {10.1016/j.neuroimage.2015.03.074},</span></span>
-<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a><span class="co">#&gt; abstract = {}}</span></span></code></pre></div>
+<span id="cb1-37"><a href="#cb1-37" tabindex="-1"></a><span class="co">#&gt; abstract = {Background: X-ray computed tomography (CT) imaging of the brain is commonly used in diagnostic settings. Although CT scans are primarily used in clinical practice, they are increasingly used in research. A fundamental processing step in brain imaging research is brain extraction - the process of separating the brain tissue from all other tissues. Methods for brain extraction have either been 1) validated but not fully automated, or 2) fully automated and informally proposed, but never formally validated. Aim: To systematically analyze and validate the performance of FSL&#39;s brain extraction tool (BET) on head CT images of patients with intracranial hemorrhage. This was done by comparing the manual gold standard with the results of several versions of automatic brain extraction and by estimating the reliability of automated segmentation of longitudinal scans. The effects of the choice of BET parameters and data smoothing is studied and reported. Methods: All images were thresholded using a 0-100Hounsfield unit (HU) range. In one variant of the pipeline, data were smoothed using a 3-dimensional Gaussian kernel (σ=1mm3) and re-thresholded to 0-100HU; in the other, data were not smoothed. BET was applied using 1 of 3 fractional intensity (FI) thresholds: 0.01, 0.1, or 0.35 and any holes in the brain mask were filled.For validation against a manual segmentation, 36 images from patients with intracranial hemorrhage were selected from 19 different centers from the MISTIE (Minimally Invasive Surgery plus recombinant-tissue plasminogen activator for Intracerebral Evacuation) stroke trial. Intracranial masks of the brain were manually created by one expert CT reader. The resulting brain tissue masks were quantitatively compared to the manual segmentations using sensitivity, specificity, accuracy, and the Dice Similarity Index (DSI). Brain extraction performance across smoothing and FI thresholds was compared using the Wilcoxon signed-rank test. The intracranial volume (ICV) of each scan was estimated by multiplying the number of voxels in the brain mask by the dimensions of each voxel for that scan. From this, we calculated the ICV ratio comparing manual and automated segmentation: ICVautomatedICVmanual.To estimate the performance in a large number of scans, brain masks were generated from the 6 BET pipelines for 1095 longitudinal scans from 129 patients. Failure rates were estimated from visual inspection. ICV of each scan was estimated and an intraclass correlation (ICC) was estimated using a one-way ANOVA. Results: Smoothing images improves brain extraction results using BET for all measures except specificity (all p&lt;. 0.01, uncorrected), irrespective of the FI threshold. Using an FI of 0.01 or 0.1 performed better than 0.35. Thus, all reported results refer only to smoothed data using an FI of 0.01 or 0.1. Using an FI of 0.01 had a higher median sensitivity (0.9901) than an FI of 0.1 (0.9884, median difference: 0.0014, p&lt;. 0.001), accuracy (0.9971 vs. 0.9971; median difference: 0.0001, p&lt;. 0.001), and DSI (0.9895 vs. 0.9894; median difference: 0.0004, p&lt;. 0.001) and lower specificity (0.9981 vs. 0.9982; median difference: -. 0.0001, p&lt;. 0.001). These measures are all very high indicating that a range of FI values may produce visually indistinguishable brain extractions. Using smoothed data and an FI of 0.01, the mean (SD) ICV ratio was 1.002 (0.008); the mean being close to 1 indicates the ICV estimates are similar for automated and manual segmentation.In the 1095 longitudinal scans, this pipeline had a low failure rate (5.2%) and the ICC estimate was high (0.929, 95% CI: 0.91, 0.945) for successfully extracted brains. Conclusion: BET performs well at brain extraction on thresholded, 1mm3 smoothed CT images with an FI of 0.01 or 0.1. Smoothing before applying BET is an important step not previously discussed in the literature. Analysis code is provided.}}</span></span>
+<span id="cb1-38"><a href="#cb1-38" tabindex="-1"></a><span class="co">#&gt; Warning: &#39;entries_to_df&#39; is deprecated.</span></span>
+<span id="cb1-39"><a href="#cb1-39" tabindex="-1"></a><span class="co">#&gt; Use &#39;gen_entries_to_df&#39; instead.</span></span>
+<span id="cb1-40"><a href="#cb1-40" tabindex="-1"></a><span class="co">#&gt; See help(&quot;Deprecated&quot;)</span></span>
+<span id="cb1-41"><a href="#cb1-41" tabindex="-1"></a><span class="co">#&gt;                                                                                                                                                               title</span></span>
+<span id="cb1-42"><a href="#cb1-42" tabindex="-1"></a><span class="co">#&gt; 1                                                 Comparing Step-Counting Algorithms for High-Resolution Wrist Accelerometry Data in Older Adults in the ARIC Study</span></span>
+<span id="cb1-43"><a href="#cb1-43" tabindex="-1"></a><span class="co">#&gt; 2                         Fine-Mapping the Association of Acute Kidney Injury With Mean Arterial and Central Venous Pressures During Coronary Artery Bypass Surgery</span></span>
+<span id="cb1-44"><a href="#cb1-44" tabindex="-1"></a><span class="co">#&gt; 3                                                               Comparing Step Counting Algorithms for High-Resolution Wrist Accelerometry Data in NHANES 2011-2014</span></span>
+<span id="cb1-45"><a href="#cb1-45" tabindex="-1"></a><span class="co">#&gt; 4                           Objectively Measured Physical Activity Using Wrist-Worn Accelerometers as a Predictor of Incident Alzheimer’s Disease in the UK Biobank</span></span>
+<span id="cb1-46"><a href="#cb1-46" tabindex="-1"></a><span class="co">#&gt; 5                                             Assessment of Renal Vein Stasis Index by Transesophageal Echocardiography During Cardiac Surgery: A Feasibility Study</span></span>
+<span id="cb1-47"><a href="#cb1-47" tabindex="-1"></a><span class="co">#&gt; 6 Occurrence of Low Cardiac Index During Normotensive Periods in Cardiac Surgery: A Prospective Cohort Study Using Continuous Noninvasive Cardiac Output Monitoring</span></span>
+<span id="cb1-48"><a href="#cb1-48" tabindex="-1"></a><span class="co">#&gt;                                                                     journal</span></span>
+<span id="cb1-49"><a href="#cb1-49" tabindex="-1"></a><span class="co">#&gt; 1 Journals of Gerontology Series A Biological Sciences and Medical Sciences</span></span>
+<span id="cb1-50"><a href="#cb1-50" tabindex="-1"></a><span class="co">#&gt; 2                                                  Anesthesia and Analgesia</span></span>
+<span id="cb1-51"><a href="#cb1-51" tabindex="-1"></a><span class="co">#&gt; 3                               Medicine and Science in Sports and Exercise</span></span>
+<span id="cb1-52"><a href="#cb1-52" tabindex="-1"></a><span class="co">#&gt; 4 Journals of Gerontology Series A Biological Sciences and Medical Sciences</span></span>
+<span id="cb1-53"><a href="#cb1-53" tabindex="-1"></a><span class="co">#&gt; 5                                                  Anesthesia and Analgesia</span></span>
+<span id="cb1-54"><a href="#cb1-54" tabindex="-1"></a><span class="co">#&gt; 6                                                  Anesthesia and Analgesia</span></span>
+<span id="cb1-55"><a href="#cb1-55" tabindex="-1"></a><span class="co">#&gt;   description</span></span>
+<span id="cb1-56"><a href="#cb1-56" tabindex="-1"></a><span class="co">#&gt; 1     Article</span></span>
+<span id="cb1-57"><a href="#cb1-57" tabindex="-1"></a><span class="co">#&gt; 2     Article</span></span>
+<span id="cb1-58"><a href="#cb1-58" tabindex="-1"></a><span class="co">#&gt; 3     Article</span></span>
+<span id="cb1-59"><a href="#cb1-59" tabindex="-1"></a><span class="co">#&gt; 4     Article</span></span>
+<span id="cb1-60"><a href="#cb1-60" tabindex="-1"></a><span class="co">#&gt; 5      Letter</span></span>
+<span id="cb1-61"><a href="#cb1-61" tabindex="-1"></a><span class="co">#&gt; 6     Article</span></span></code></pre></div>
 </div>
 </div>
 
